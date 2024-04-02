@@ -26,6 +26,8 @@ def data_exists(details):
 
 
 def getAllCollections():
+    client = MongoClient(mongo_connectionStr)  
+    db = client[Mongo_db]
     collection_names = db.list_collection_names()
     device_ids = {}
     for name in collection_names:
