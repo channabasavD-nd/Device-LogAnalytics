@@ -50,7 +50,7 @@ def gen_report(report, tracebacks):
     st.download_button(  
         label="Download report",  
         data=xlsx,  
-        file_name=f'report-{st.session_state['deviceID']}-{st.session_state['ota_version']}({st.session_state['date']}).xlsx',  
+        file_name=f"report-{st.session_state['deviceID']}-{st.session_state['ota_version']}({st.session_state['date']}).xlsx",  
         mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',  
     )  
 
