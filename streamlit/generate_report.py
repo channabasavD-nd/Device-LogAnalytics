@@ -7,7 +7,7 @@ from itertools import zip_longest
 def To_DF(report, traebacks):
     df_report = pd.DataFrame.from_dict(report, orient='index').T
     if traebacks :
-        data = {'Traacebacks_ndcentral': traebacks['ndcentral'].keys(), 'Traacebacks_inwardAnalyticsClient':traebacks['inwardAnalyticsClient'].keys(), 'Traacebacks_outwardAnalyticsClient':traebacks['outwardAnalyticsClient'].keys(), 'Traacebacks_inertialAnalyticsClient':traebacks['inertialAnalyticsClient'].keys(), 'Traacebacks_inferenceInertial':traebacks['inferenceInertial'].keys(), 'Traacebacks_analyticsService':traebacks['analyticsService'].keys()}
+        data = {'Traacebacks_ndcentral': list(traebacks['ndcentral'].keys()), 'Traacebacks_inwardAnalyticsClient':list(traebacks['inwardAnalyticsClient'].keys()), 'Traacebacks_outwardAnalyticsClient':list(traebacks['outwardAnalyticsClient'].keys()), 'Traacebacks_inertialAnalyticsClient':list(traebacks['inertialAnalyticsClient'].keys()), 'Traacebacks_inferenceInertial':list(traebacks['inferenceInertial'].keys()), 'Traacebacks_analyticsService':list(traebacks['analyticsService'].keys())}
         max_length = max(len(lst) for lst in data.values())  
     
         for key in data:  
