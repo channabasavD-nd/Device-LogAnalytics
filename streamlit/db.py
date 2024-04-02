@@ -49,8 +49,8 @@ def get_data():
     collection = db[f"{st.session_state['ota_version']}_{st.session_state['deviceID']}"]  
     date_obj = datetime.combine(st.session_state['date'], datetime.min.time()) 
     end_date = date_obj + timedelta(days=1)
-    query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], "start_time": {"$gte": date_obj, "$lt": end_date}}
-    # query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], 'date': st.session_state['date'].strftime('%Y-%m-%d')}
+    # query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], "start_time": {"$gte": date_obj, "$lt": end_date}}
+    query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], 'date': st.session_state['date'].strftime('%Y-%m-%d')}
     documents = collection.find(query)  
     document_count = collection.count_documents(query) 
     if document_count == 0:
