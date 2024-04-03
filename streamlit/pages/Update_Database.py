@@ -25,6 +25,9 @@ details['env'] = env
 details['date'] = date
 details['deviceType'] = device_type
 if st.button('Extract'):
+    if deviceID == None:
+        st.info('deviceID field cannot be empty')
+        st.stop()
     if mongodb_locked():
         st.warning("Another user is already uploading data. Please wait until the upload is complete.")
     else:
