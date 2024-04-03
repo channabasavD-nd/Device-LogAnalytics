@@ -1,6 +1,7 @@
 import sys
 import streamlit as st
 from pymongo import MongoClient 
+from bson.objectid import ObjectId
 from datetime import datetime, timedelta 
 
 mongo_connectionStr = 'mongodb://10.200.10.181:27017/'
@@ -9,6 +10,15 @@ Mongo_tracebacks = 'Device_log_tracebacks'
 
 client = MongoClient(mongo_connectionStr)  
 db = client[Mongo_db]  
+
+def mongodb_locked():
+    collection = db['lock']
+    document = collection.find_one({"_id": ObjectId("660ce78daf3d12e00e4d5e9d")})
+    return int(document['upload_lock'])
+
+def mongodb_setLock(lock):
+    collection = db['lock']
+    update_res = collection.update_one({"_id": ObjectId("660ce78daf3d12e00e4d5e9d")},{"$set": {"upload_lock": lock}})
 
 def data_exists(details):
     collection_names = db.list_collection_names()
@@ -23,12 +33,12 @@ def data_exists(details):
                 break
     return flag
 
-
-
 def getAllCollections():
     collection_names = db.list_collection_names()
     device_ids = {}
     for name in collection_names:
+        if name == 'lock':
+            continue
         ota_version,device_id = name.split('_')
         if device_id in device_ids:
             device_ids[device_id].append(ota_version)
