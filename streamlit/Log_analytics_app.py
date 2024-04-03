@@ -27,26 +27,3 @@ if __name__ == "__main__":
 
 
 
-# NOTE: review logs to extract some more useful info (*)
-# check for standards(sonarcube)(*)
-# add cache
-# make report readable 
-# add initialization to ini file (*)
-# create dashboard for presentation
-# add multiple days feature(*)(for atleast analytics)
-# Test it on various devious(DTS/Normal) (staging/production)(**)
-
-
-# add loggers to all files(for streamlit refer github)(**)
-# deploy on my EC2 instance
-# after updating - delete the logs
-# Add dates that are available(mayb as a info message)
-# handle session states of multiple pages
-
-
-#status on PR raised
-#deploy
-#complete the excel
-#Arpan's task 
-#testing D215
-#modify the code 
