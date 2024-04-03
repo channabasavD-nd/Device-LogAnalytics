@@ -25,7 +25,7 @@ details['env'] = env
 details['date'] = date
 details['deviceType'] = device_type
 if st.button('Extract'):
-    if deviceID == None:
+    if not deviceID:
         st.info('deviceID field cannot be empty')
         st.stop()
     if mongodb_locked():
