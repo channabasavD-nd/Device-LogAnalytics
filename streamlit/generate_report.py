@@ -16,7 +16,7 @@ def To_DF(report, traebacks):
                 data[key] = data[key] + [np.nan] * length_diff 
 
         df_traceback = pd.DataFrame(data)
-        df =  pd.concat([df_report, df_traceback], ignore_index=True)
+        df =  pd.concat([df_report, df_traceback], axis=1)
     else:
         st.warning('Traceback stats missing')
         df = df_report
