@@ -20,6 +20,11 @@ def mongodb_setLock(lock):
     collection = db['lock']
     update_res = collection.update_one({"_id": ObjectId("660ce78daf3d12e00e4d5e9d")},{"$set": {"upload_lock": lock}})
 
+def get_availableDates():
+    collection = db[f"{st.session_state['ota_version']}_{st.session_state['deviceID']}"]
+    unique_values = collection.distinct('date')
+    return unique_values
+
 def data_exists(details):
     collection_names = db.list_collection_names()
     # requested_collections[]
@@ -48,7 +53,8 @@ def getAllCollections():
 
 def get_tracebacks():
     traceback_db = client[Mongo_tracebacks]
-    collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date'].strftime('%Y-%m-%d')]
+    # collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date'].strftime('%Y-%m-%d')]
+    collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date']]
     document = collection.find_one({'device_ID': st.session_state['deviceID']})
     if not document:
         st.session_state
@@ -60,7 +66,8 @@ def get_data():
     date_obj = datetime.combine(st.session_state['date'], datetime.min.time()) 
     end_date = date_obj + timedelta(days=1)
     # query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], "start_time": {"$gte": date_obj, "$lt": end_date}}
-    query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], 'date': st.session_state['date'].strftime('%Y-%m-%d')}
+    # query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], 'date': st.session_state['date'].strftime('%Y-%m-%d')}
+    query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], 'date': st.session_state['date']}
     documents = collection.find(query)  
     document_count = collection.count_documents(query) 
     if document_count == 0:
