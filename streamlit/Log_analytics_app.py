@@ -20,11 +20,21 @@ def main():
         documents = get_data()  
         report = display_dashboard(documents)  
         tracebacks = get_tracebacks()
-        gen_report(report,tracebacks)  
+        gen_report(report, tracebacks)  
     
   
 if __name__ == "__main__":  
     main()  
 
 
+
+# PR status 
+# excel 
+# streamlit changes (reason for missing obs_data, add more data, even inferenceInertial make it session wise )
+# multiple days 
+# loggers 
+# go through log files 
+#lock for only same data getting uploaded
+#Annotation traceback analysis 
+# present properly
 

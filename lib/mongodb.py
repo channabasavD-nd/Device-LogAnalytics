@@ -59,24 +59,27 @@ def update_tracebacks(tracebacks):
     client = MongoClient(mongo_connectionStr)
     db = client[Mongo_tracebacks] 
     current_collection = tracebacks['device_ID']+'_'+tracebacks['date']
-    try:
-        collection_names = db.list_collection_names()
-        flag = 0
-        for collection_name in collection_names:
-            if collection_name == current_collection:
-                st.write('Tracebacks data already exixt')
-                flag = 1
-                break
-        
-        if not flag:
-            collection = db[current_collection]
-            collection.insert_one(tracebacks)
-            st.write('Tracebacks data updated')
+    if len(tracebacks['ndcentral'])+len(tracebacks['inwardAnalyticsClient'])+len(tracebacks['outwardAnalyticsClient'])+len(tracebacks['inertialAnalyticsClient'])+len(tracebacks['inferenceInertial'])+len(tracebacks['analyticsService']) > 0 :
 
-    except Exception as e:
-        print("Exception in mongoDB :",e)
-        st.error(e)
+        try:
+            collection_names = db.list_collection_names()
+            flag = 0
+            for collection_name in collection_names:
+                if collection_name == current_collection:
+                    st.write('Tracebacks data already exixt')
+                    flag = 1
+                    break
+            
+            if not flag:
+                collection = db[current_collection]
+                collection.insert_one(tracebacks)
+                st.write('Tracebacks data updated')
 
+        except Exception as e:
+            print("Exception in mongoDB :",e)
+            st.error(e)
+    else:
+         st.info("No tracebacks found")
 
 
 

@@ -26,6 +26,7 @@ class Session_details(object):
              'outwardAnalyticsClient': {},
              'inertialAnalyticsClient': {},
              'inferenceInertial': {},
+             'inferenceInertial_sessionID':{},
              'analyticsService': {}
              }
 
@@ -75,25 +76,23 @@ class Session_details(object):
                                                                         "summary_file_written_status": 0
                                                                         }, 
                                                     "analyticsService":{
-                                                                        "Inward_session_drop": 0,
-                                                                        "reason_for_inward_session_drop": 'NA',
-                                                                        "Outward session drop": 0,
-                                                                        "reason_for_outward_session_drop": 'NA'
+                                                                        "Inward_session_drop": -1,
+                                                                        "reason_for_inward_session_drop": 'Not processed',
+                                                                        "Outward_session_drop": -1,
+                                                                        "reason_for_outward_session_drop": 'Not processed'
                                                                         }, 
                                                     'inference':{
                                                                 "traceback_count":0,
                                                                 "outward_NRT":{
-                                                                            "outward_NRT_processing_status": -1,
-                                                                            "failure_reason_o": -1,
-                                                                            "processed_time": -1,
-                                                                            "summary_file_written_status": -1,
+                                                                            "outward_NRT_processing_status": False,
+                                                                            "processed_time": False,
+                                                                            "summary_file_written_status": False,
                                                                             "traceback": 'NA'
                                                                             }, 
                                                                 "inward_NRT":{
-                                                                            "inward_NRT_processing_status": -1,
-                                                                            "failure_reason_o": -1,
-                                                                            "processed_time": -1,
-                                                                            "summary_file_written_status": -1,
+                                                                            "inward_NRT_processing_status": False,
+                                                                            "processed_time": False,
+                                                                            "summary_file_written_status": False,
                                                                             "traceback": 'NA'
                                                                             }
                                                                 } 
@@ -101,7 +100,8 @@ class Session_details(object):
                     if "traceback" in line.lower():
                         traceback_index = log_content.index(line)
                         if not log_content[traceback_index+1][:2].isdigit():
-                            traceback = ''
+                            traceback = 'Traceback ' + line.split('Traceback')[-1]
+                            traceback_index+=1
                             while traceback_index<len(log_content) and not log_content[traceback_index][:2].isdigit():
                                 traceback+='\n'+log_content[traceback_index]
                                 traceback_index+=1
@@ -145,7 +145,8 @@ class Session_details(object):
                 if "traceback" in line.lower():
                         traceback_index = log_content.index(line)
                         if not log_content[traceback_index+1][:2].isdigit():
-                            traceback = ''
+                            traceback = 'Traceback ' + line.split('Traceback')[-1]
+                            traceback_index+=1
                             while traceback_index<len(log_content) and not log_content[traceback_index][:2].isdigit():
                                 traceback+='\n'+log_content[traceback_index]
                                 traceback_index+=1
@@ -185,7 +186,8 @@ class Session_details(object):
                     if "traceback" in line.lower():
                         traceback_index = log_content.index(line)
                         if not log_content[traceback_index+1][:2].isdigit():
-                            traceback = ''
+                            traceback = 'Traceback ' + line.split('Traceback')[-1]
+                            traceback_index+=1
                             while traceback_index<len(log_content) and not log_content[traceback_index][:2].isdigit():
                                 traceback+='\n'+log_content[traceback_index]
                                 traceback_index+=1
@@ -224,7 +226,8 @@ class Session_details(object):
                     if "traceback" in line.lower():
                         traceback_index = log_content.index(line)
                         if not log_content[traceback_index+1][:2].isdigit():
-                            traceback = ''
+                            traceback = 'Traceback ' + line.split('Traceback')[-1]
+                            traceback_index+=1
                             while traceback_index<len(log_content) and not log_content[traceback_index][:2].isdigit():
                                 traceback+='\n'+log_content[traceback_index]
                                 traceback_index+=1
@@ -244,11 +247,15 @@ class Session_details(object):
     def inferenceInertial_stats(self):
             with open(f"{self.outdir}/inference_inertial.log", "r", encoding="utf-8", errors="ignore") as file:
                 log_content = file.read().splitlines()
-
+            cur_session = None
             for line in log_content:
                 try:
+                    currentSession_match = re.search(config.get('sessionInfo', 'currentSession'), line)
                     summaryFile_match = re.search(config.get('inferenceInertial', 'summaryFile'), line)
                     processing_match = re.search(config.get('inferenceInertial', 'processing'), line)
+                    if currentSession_match:
+                        cur_session = currentSession_match.group(1)
+                        print(cur_session)
                     if processing_match:
                         # print('in_inf_iner')
                         session_id = processing_match.group(1)
@@ -259,7 +266,8 @@ class Session_details(object):
                     if "traceback" in line.lower():
                         traceback_index = log_content.index(line)
                         if not log_content[traceback_index+1][:2].isdigit():
-                            traceback = ''
+                            traceback = 'Traceback ' + line.split('Traceback')[-1]
+                            traceback_index+=1
                             while traceback_index<len(log_content) and not log_content[traceback_index][:2].isdigit():
                                 traceback+='\n'+log_content[traceback_index]
                                 traceback_index+=1
@@ -269,6 +277,8 @@ class Session_details(object):
                         if traceback in self.tracebacks['inferenceInertial']:
                             self.tracebacks['inferenceInertial'][traceback]+=1
                         else:
+                            self.tracebacks['inferenceInertial_sessionID'][traceback] = cur_session
+                            print('inside traceback')
                             self.tracebacks['inferenceInertial'][traceback] = 1
                 except Exception as e:
                     print('\nException occured in inferenceInertial:',e,'\n')
@@ -284,6 +294,8 @@ class Session_details(object):
             try:
                 Inward_drop_match = re.search(config.get('analyticsService', 'InwardDroppedSession'), line) or re.search(config.get('analyticsService', 'InwardDroppedSession_slowdown'), line)
                 Outward_drop_match = re.search(config.get('analyticsService', 'OutwardDroppedSession'), line) or re.search(config.get('analyticsService', 'OutwardDroppedSession_slowdown'), line)
+                session_processed_match = re.search(config.get('analyticsService', 'Session_processed'), line) 
+                
                 if Inward_drop_match :
                     session_id = Inward_drop_match.group(1)
                     Failure_cause = Inward_drop_match.group(2)
@@ -293,11 +305,18 @@ class Session_details(object):
                     session_id = Outward_drop_match.group(1)
                     Failure_cause = (Outward_drop_match.group(2))
                     self.session_ids[session_id]['analyticsService']['reason_for_outward_session_drop'] = Failure_cause
-                    self.session_ids[session_id]['analyticsService']['Outward session drop'] = 1
+                    self.session_ids[session_id]['analyticsService']['Outward_session_drop'] = 1
+                elif session_processed_match:
+                    session_id = session_processed_match.group(2)
+                    service = session_processed_match.group(1)
+                    self.session_ids[session_id]['analyticsService'][f'reason_for_{service.lower()}_session_drop'] = 'NA'
+                    self.session_ids[session_id]['analyticsService'][f'{service}_session_drop'] = 0
+                         
                 if "traceback" in line.lower():
                         traceback_index = log_content.index(line)
                         if not log_content[traceback_index+1][:2].isdigit():
-                            traceback = ''
+                            traceback = 'Traceback ' + line.split('Traceback')[-1]
+                            traceback_index+=1
                             while traceback_index<len(log_content) and not log_content[traceback_index][:2].isdigit():
                                 traceback+='\n'+log_content[traceback_index]
                                 traceback_index+=1
@@ -308,6 +327,7 @@ class Session_details(object):
                             self.tracebacks['analyticsService'][traceback]+=1
                         else:
                             self.tracebacks['analyticsService'][traceback] = 1
+
             except Exception as e:
                 print('\nException occured in analyticsService:',e,'\n')
                 continue

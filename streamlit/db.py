@@ -56,9 +56,16 @@ def get_tracebacks():
     # collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date'].strftime('%Y-%m-%d')]
     collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date']]
     document = collection.find_one({'device_ID': st.session_state['deviceID']})
-    if not document:
-        st.session_state
     return document
+
+def get_tracebacks_DB():
+    collection = db[f"{st.session_state['ota_version']}_{st.session_state['deviceID']}"] 
+    query = {'$or': [
+        {'inference.inward_NRT.traceback': {'$ne': 'NA'}},
+        {'inference.outward_NRT.traceback': {'$ne': 'NA'}}
+    ]}
+    result = collection.find(query)
+    return result
 
 def get_data():  
 
@@ -144,7 +151,7 @@ def get_pieChart_data(documents):
                 report['inward_sessionDrop'][failure_reason].append(document['session_ID'])
             else:
                 report['inward_sessionDrop'][failure_reason] = [document['session_ID']]
-        
+
         pieData['inwardNRT']['total_tracebacks']+= document['inference']['traceback_count']
         pieData['inwardNRT']['processing_time']+= float(document['inference']['inward_NRT']['processed_time'])
 
@@ -173,7 +180,7 @@ def get_pieChart_data(documents):
             pieData['outwardClient']['events_notProcessed']+=1
             report['unprocessed_events_outwardClient'].append(document['session_ID'])
         
-        if document['analyticsService']['Outward session drop']:
+        if document['analyticsService']['Outward_session_drop'] :
             failure_reason = document['analyticsService']['reason_for_outward_session_drop']
             if  failure_reason in pieData['outwardAnalytics'].keys():
                 pieData['outwardAnalytics'][failure_reason]+=1

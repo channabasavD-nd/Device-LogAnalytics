@@ -15,7 +15,7 @@ st.markdown("<h1 style='text-align: center; color: white;'>Extract Log Analytics
 deviceID = st.text_input('Enter Device ID')
 env = st.selectbox("Select Environment", ['Staging','Production']).lower()
 date = st.date_input('Enter Date')  
-device_type = st.selectbox("Select Device Type", ['DTS', 'Normal'])
+device_type = st.selectbox("Select Device Type", ['Normal', 'DTS'])
 date = date.strftime('%Y-%m-%d')
 # st.warning("Make Sure AWS SSO Authentication is completed")
 

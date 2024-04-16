@@ -26,7 +26,7 @@ def pie_chart(label, data, explode):
     for i in range(len(label)):
         label[i] = label[i] + ' - ' + str(data[i])
     ax.legend(wedges, label,
-            title="Labels",
+            title=f"Labels (Total: {sum(data)})",
             loc="center left",
             bbox_to_anchor=(1, 0, 0.5, 1))
     for autotext, size in zip(autotexts, data):
@@ -47,10 +47,10 @@ def display_dashboard(documents):
             inwardAnalytics_data = [total_documents-sum(pieData['inwardAnalytics'].values())]
             for key in pieData['inwardAnalytics'].keys():
                 if 'low power' in key :
-                    inwardAnalytics_label.append('low power')
+                    inwardAnalytics_label.append('Low power')
                     inwardAnalytics_data.append(pieData['inwardAnalytics'][key])
                 elif "slowdown" in key:
-                    inwardAnalytics_label.append('slow down')
+                    inwardAnalytics_label.append('Slow down')
                     inwardAnalytics_data.append(pieData['inwardAnalytics'][key])
                 else:
                     inwardAnalytics_label.append(key)
@@ -65,10 +65,10 @@ def display_dashboard(documents):
             outwardAnalytics_data = [total_documents-sum(pieData['outwardAnalytics'].values())]
             for key in pieData['outwardAnalytics'].keys():
                 if 'low power' in key :
-                    outwardAnalytics_label.append('low power')
+                    outwardAnalytics_label.append('Low power')
                     outwardAnalytics_data.append(pieData['outwardAnalytics'][key])
                 elif "slowdown" in key:
-                    outwardAnalytics_label.append('slow down')
+                    outwardAnalytics_label.append('Slow down')
                     outwardAnalytics_data.append(pieData['outwardAnalytics'][key])
                 else:
                     outwardAnalytics_label.append(key)
