@@ -36,7 +36,14 @@ def extract_and_combine_logs(outdir):
             #zip_ref.extractall(out_zip_dir)
             #zip_ref.close()
             os.remove(os.path.join(outdir, fil))
-         
+        elif ".zip" in fil:
+            out_zip_dir = os.path.join(outdir, fil.split('.zip')[0])
+            if os.path.exists(out_zip_dir):
+                shutil.rmtree(out_zip_dir)
+            with zipfile.ZipFile(os.path.join(outdir, fil), 'r') as zip_ref:
+                zip_ref.extractall(out_zip_dir)
+            os.remove(os.path.join(outdir, fil))
+            
         logs_comb = ['analytics', 'audio'] 
         new_logs_comb = ['inertialAnalyticsClient', 'inwardAnalyticsClient', 'outwardAnalyticsClient', 'inference', 'scheduler','overspeedClient']
         cmd = "cat %s/*/%s/log_* > %s/%s.log"

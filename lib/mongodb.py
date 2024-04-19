@@ -59,8 +59,7 @@ def update_tracebacks(tracebacks):
     client = MongoClient(mongo_connectionStr)
     db = client[Mongo_tracebacks] 
     current_collection = tracebacks['device_ID']+'_'+tracebacks['date']
-    if len(tracebacks['ndcentral'])+len(tracebacks['inwardAnalyticsClient'])+len(tracebacks['outwardAnalyticsClient'])+len(tracebacks['inertialAnalyticsClient'])+len(tracebacks['inferenceInertial'])+len(tracebacks['analyticsService']) > 0 :
-
+    if len(tracebacks['ndcentral'])+len(tracebacks['inwardAnalyticsClient'])+len(tracebacks['outwardAnalyticsClient'])+len(tracebacks['inertialAnalyticsClient'])+len(tracebacks['inferenceInertial'])+len(tracebacks['analyticsService'])+len(tracebacks['analyticsService'])+len(tracebacks['inference'])+len(tracebacks['audio'])+len(tracebacks['health'])+len(tracebacks['overspeedClient'])+len(tracebacks['reboot'])+len(tracebacks['scheduler']) > 0 :
         try:
             collection_names = db.list_collection_names()
             flag = 0

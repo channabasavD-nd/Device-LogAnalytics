@@ -44,7 +44,7 @@ if st.button('Extract'):
                     e_status  = download_logs.extract_and_combine_logs(outdir)
                     st.write('extracted logs')
     
-                    # outdir = '3633090953/2024-03-13'
+                    # outdir = '3633054565/2024-04-17'
                     session_obj = Session_details(outdir, details)
                     for attribute_name, attribute_value in vars(Session_details).items():
                         if callable(attribute_value) and attribute_name != "__init__":

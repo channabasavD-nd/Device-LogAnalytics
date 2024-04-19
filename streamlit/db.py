@@ -44,7 +44,8 @@ def getAllCollections():
     for name in collection_names:
         if name == 'lock':
             continue
-        ota_version,device_id = name.split('_')
+        ota_version = '_'.join(name.split('_')[:-1])
+        device_id = name.split('_')[-1]
         if device_id in device_ids:
             device_ids[device_id].append(ota_version)
         else:
@@ -58,14 +59,14 @@ def get_tracebacks():
     document = collection.find_one({'device_ID': st.session_state['deviceID']})
     return document
 
-def get_tracebacks_DB():
-    collection = db[f"{st.session_state['ota_version']}_{st.session_state['deviceID']}"] 
-    query = {'$or': [
-        {'inference.inward_NRT.traceback': {'$ne': 'NA'}},
-        {'inference.outward_NRT.traceback': {'$ne': 'NA'}}
-    ]}
-    result = collection.find(query)
-    return result
+# def get_tracebacks_DB():
+#     collection = db[f"{st.session_state['ota_version']}_{st.session_state['deviceID']}"] 
+#     query = {'$or': [
+#         {'inference.inward_NRT.traceback': {'$ne': 'NA'}},
+#         {'inference.outward_NRT.traceback': {'$ne': 'NA'}}
+#     ]}
+#     result = collection.find(query)
+#     return result
 
 def get_data():  
 

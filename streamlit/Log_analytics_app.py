@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
 # PR status 
 # excel 
-# streamlit changes (reason for missing obs_data, add more data, even inferenceInertial make it session wise )
+# streamlit changes (reason for missing obs_data,)
 # multiple days 
 # loggers 
 # go through log files 
@@ -38,3 +38,8 @@ if __name__ == "__main__":
 #Annotation traceback analysis 
 # present properly
 
+# monitor logs 
+# document intstalling package on both B2 and crait
+
+# show the report 
+# bug in download logs 
