@@ -59,24 +59,24 @@
 # result = collection.delete_many({'date': {'$nin': dates_to_keep}})
 
 # print(f"Deleted {result.deleted_count} documents.")
-import re
+# import re
 
-# Input line
-line = '1713309952021: 2261055: AS: I: 5168: 5378: Outward - Session Change. New session Registered, Length = 61, Name = 0_trip0044_part0007d6_13.0270_77.7610_0.0_1713309951972_y.mkv, StartFrameCnt = 0'
-line2 = '1712302624832: 324706: AS: I: 5074: 5638: Outward - Session Change. New session Registered, Length = 82, Name = /home/iriscli/files/0_trip065b_part00232c_44.9634_-92.7247_0.0_1712302624715_y.mkv, StartFrameCnt = 0'
-pattern = r'\d+: \d+: AS: I: \d+: \d+: (.*ward) - Session Change.*0(_trip.*_y).*'
+# # Input line
+# line = '1713309952021: 2261055: AS: I: 5168: 5378: Outward - Session Change. New session Registered, Length = 61, Name = 0_trip0044_part0007d6_13.0270_77.7610_0.0_1713309951972_y.mkv, StartFrameCnt = 0'
+# line2 = '1712302624832: 324706: AS: I: 5074: 5638: Outward - Session Change. New session Registered, Length = 82, Name = /home/iriscli/files/0_trip065b_part00232c_44.9634_-92.7247_0.0_1712302624715_y.mkv, StartFrameCnt = 0'
+# pattern = r'\d+: \d+: AS: I: \d+: \d+: (.*ward) - Session Change.*0(_trip.*_y).*'
 
-# Search for the pattern in the line
-match = re.search(pattern, line)
+# # Search for the pattern in the line
+# match = re.search(pattern, line)
 
-# If a match is found
-if match:
-    # Extract the name
-    name = match.group(1)
-    print(type(name))
-    print("Name:", name)
-else:
-    print("Pattern not found in the line.")
+# # If a match is found
+# if match:
+#     # Extract the name
+#     name = match.group(1)
+#     print(type(name))
+#     print("Name:", name)
+# else:
+#     print("Pattern not found in the line.")
 # from pymongo import MongoClient
 
 # # Connect to MongoDB
@@ -136,3 +136,26 @@ from pymongo import MongoClient
     
 #     # Update each document in the collection
 #     collection.update_many({}, {'$set': {'inferenceInertial_sessionID':{}}})
+
+# from selenium import webdriver  
+  
+# # create a new browser instance  
+# driver = webdriver.Firefox()  # or webdriver.Chrome()  
+  
+# # navigate to your Streamlit app  
+# driver.get('http://localhost:8503')  
+  
+# # get the page's HTML  
+# html = driver.page_source  
+  
+# # write the HTML to a file  
+# with open('output.html', 'w') as f:  
+#     f.write(html)  
+  
+# # close the browser  
+# driver.quit()  
+
+
+a = []
+if len(a)>1 and a[0]:
+    print('s')

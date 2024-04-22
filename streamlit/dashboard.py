@@ -59,6 +59,8 @@ def display_dashboard(documents):
             fig = pie_chart(inwardAnalytics_label, inwardAnalytics_data, explode)
             st.markdown("<h3 style='text-align: center; color: white;'>Inward analytics service</h3>", unsafe_allow_html=True)
             st.pyplot(fig)
+            plt.savefig('inwardAnalytics_chart.png', bbox_inches='tight')  
+            plt.close(fig)
 
         with col2:
             outwardAnalytics_label = ['Processed']
@@ -77,6 +79,9 @@ def display_dashboard(documents):
             fig = pie_chart(outwardAnalytics_label, outwardAnalytics_data, explode)
             st.markdown("<h3 style='text-align: center; color: white;'>Outward analytics service</h3>", unsafe_allow_html=True)
             st.pyplot(fig)
+            plt.savefig('outwardAnalytics_chart.png', bbox_inches='tight')  
+            plt.close(fig)
+            
 
     with st.expander("## Analytics Client"):
 
@@ -89,6 +94,8 @@ def display_dashboard(documents):
             fig = pie_chart(inwardClient_label, inwardClient_data, explode)
             st.markdown("<h3 style='text-align: center; color: white;'>Inward analytics client</h3>", unsafe_allow_html=True)
             st.pyplot(fig)
+            plt.savefig('inwardClient_chart.png', bbox_inches='tight') 
+            plt.close(fig) 
             # st.markdown(f"<h5 style='text-align: left; color: white;'>Events detected : {pieData['inwardClient']['events_detected']}</h3>", unsafe_allow_html=True)
             # st.markdown(f"<h5 style='text-align: left; color: white;'>Events missing : {pieData['inwardClient']['events_notProcessed']}</h3>", unsafe_allow_html=True)
 
@@ -99,6 +106,9 @@ def display_dashboard(documents):
             fig = pie_chart(outwardClient_label, outwardClient_data, explode)
             st.markdown("<h3 style='text-align: center; color: white;'>Outward analytics client</h3>", unsafe_allow_html=True)
             st.pyplot(fig)
+            plt.savefig('outwardClient_chart.png', bbox_inches='tight')  
+            plt.close(fig)
+            
             # st.markdown(f"<h5 style='text-align: left; color: white;'>Events detected : {pieData['outwardClient']['events_detected']}</h3>", unsafe_allow_html=True)
             # st.markdown(f"<h5 style='text-align: left; color: white;'>Events missing : {pieData['outwardClient']['events_notProcessed']}</h3>", unsafe_allow_html=True)
 
@@ -114,6 +124,8 @@ def display_dashboard(documents):
             st.pyplot(fig)
             st.markdown(f"<h5 style='text-align: left; color: white;'>Average processing time : {pieData['inwardNRT']['processing_time']/total_documents}</h5>", unsafe_allow_html=True)
             st.markdown(f"<h5 style='text-align: left; color: white;'>Missing summary files : {total_documents-pieData['inwardNRT']['summaryFile_status']}</h5>", unsafe_allow_html=True)
+            plt.savefig('inwardNRT_chart.png', bbox_inches='tight')  
+            plt.close(fig)
         with col2:
             outwardNRT_label = ['Successfully processed', 'Processing failed']
             outwardNRT_data = [pieData['outwardNRT']['processing_status'], total_documents-pieData['outwardNRT']['processing_status']]
@@ -123,8 +135,12 @@ def display_dashboard(documents):
             st.pyplot(fig)
             st.markdown(f"<h5 style='text-align: left; color: white;'>Average processing time : {pieData['outwardNRT']['processing_time']/total_documents}</h5>", unsafe_allow_html=True)
             st.markdown(f"<h5 style='text-align: left; color: white;'>Missing summary files : {total_documents-pieData['outwardNRT']['summaryFile_status']}</h5>", unsafe_allow_html=True)
+            plt.savefig('outwardNRT_chart.png', bbox_inches='tight')  
+            plt.close(fig)
         st.markdown(f"<h5 style='text-align: left; color: white;'></h5>", unsafe_allow_html=True)
         st.markdown(f"<h5 style='text-align: left; color: white;'>Total tracebacks : {pieData['inwardNRT']['total_tracebacks']}</h5>", unsafe_allow_html=True)
 
     return report
 
+  
+    

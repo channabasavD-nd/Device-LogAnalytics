@@ -55,9 +55,17 @@ def getAllCollections():
 def get_tracebacks():
     traceback_db = client[Mongo_tracebacks]
     # collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date'].strftime('%Y-%m-%d')]
-    collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date']]
-    document = collection.find_one({'device_ID': st.session_state['deviceID']})
-    return document
+    documents = []
+    if st.session_state['date']:
+        collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date']]
+        document = collection.find_one({'device_ID': st.session_state['deviceID']})
+        documents.append(document)
+    else:
+        for date in get_availableDates():
+            collection = traceback_db[st.session_state['deviceID']+'_'+date]
+            document = collection.find_one({'device_ID': st.session_state['deviceID']})
+            documents.append(document)
+    return documents
 
 # def get_tracebacks_DB():
 #     collection = db[f"{st.session_state['ota_version']}_{st.session_state['deviceID']}"] 
@@ -75,7 +83,11 @@ def get_data():
     # end_date = date_obj + timedelta(days=1)
     # query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], "start_time": {"$gte": date_obj, "$lt": end_date}}
     # query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], 'date': st.session_state['date'].strftime('%Y-%m-%d')}
-    query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], 'date': st.session_state['date']}
+    if st.session_state['date']:
+        query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version'], 'date': st.session_state['date']}
+    else:
+        query = {"device_ID": st.session_state['deviceID'], "ota_version": st.session_state['ota_version']}
+
     documents = collection.find(query)  
     document_count = collection.count_documents(query) 
     if document_count == 0:
