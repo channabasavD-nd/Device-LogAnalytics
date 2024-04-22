@@ -464,9 +464,9 @@ class Session_details(object):
                                 # self.tracebacks['analyticsService'].append(traceback)
                                 # print(traceback)
                                 if traceback in self.tracebacks[f"{Log_file.split('.')[0]}"]:
-                                    self.tracebacks[f'{Log_file.split('.')[0]}'][traceback]+=1
+                                    self.tracebacks[f"{Log_file.split('.')[0]}"][traceback]+=1
                                 else:
-                                    self.tracebacks[f'{Log_file.split('.')[0]}'][traceback] = 1
+                                    self.tracebacks[f"{Log_file.split('.')[0]}"][traceback] = 1
             except Exception as e:
                 st.write('\nException occured while fetching tracebacks:',e,'\n')
                 print('\nException occured while fetching tracebacks:',e,'\n')
