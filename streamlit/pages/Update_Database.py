@@ -21,8 +21,10 @@ date = date.strftime('%Y-%m-%d')
 
 details = {}
 details['deviceid'] = deviceID
+st.session_state['upload_deviceID'] = deviceID
 details['env'] = env
 details['date'] = date
+st.session_state['upload_date'] = date
 details['deviceType'] = device_type
 if st.button('Extract'):
     if not deviceID:
@@ -44,7 +46,7 @@ if st.button('Extract'):
                     e_status  = download_logs.extract_and_combine_logs(outdir)
                     st.write('extracted logs')
     
-                    # outdir = '264059045/2024-04-20'
+                    # outdir = '103322300022/2024-04-22'
                     session_obj = Session_details(outdir, details)
                     for attribute_name, attribute_value in vars(Session_details).items():
                         if callable(attribute_value) and attribute_name != "__init__":

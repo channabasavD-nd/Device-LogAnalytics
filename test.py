@@ -1,7 +1,7 @@
 # from pymongo import MongoClient
 
-# mongo_connectionStr = 'mongodb://10.200.10.181:27017/'
-# Mongo_db = 'Device_log_tracebacks'
+mongo_connectionStr = 'mongodb://10.200.10.181:27017/'
+Mongo_db = 'Device_log_tracebacks'
 # collection_name = '3.6.4.rc.2_3633090953'
 
 # def remove_duplicates():
@@ -81,6 +81,7 @@
 
 # # Connect to MongoDB
 #  # Replace 'your_database_name' with your database name
+# from pymongo import MongoClient
 # client = MongoClient(mongo_connectionStr)
 # db = client[Mongo_db]
 
@@ -119,7 +120,6 @@
 
 
 
-from pymongo import MongoClient
 
 # # Connect to the MongoDB database
 # client = MongoClient('mongodb://10.200.10.181:27017/')
@@ -156,6 +156,46 @@ from pymongo import MongoClient
 # driver.quit()  
 
 
-a = []
-if len(a)>1 and a[0]:
-    print('s')
+# from pymongo import MongoClient
+
+# Connect to MongoDB
+# client = MongoClient('mongodb://localhost:27017/')
+# db = client['your_database']
+
+# List all collections you want to merge
+
+# Perform aggregation to merge collections
+# pipeline = []
+# for collection_name in collections_to_merge:
+#     pipeline.append({"$unionWith": {"coll": f"${collection_name}"}})
+# cursor = {}
+
+# Execute the aggregation pipeline
+# db.command('aggregate', 'Tracebacks', pipeline=pipeline, cursor=cursor)
+
+# print("Documents merged successfully!")
+
+import pandas as pd
+
+# Sample DataFrame
+df = pd.DataFrame({'Column 1': ['This is a long text', 'Short', 'Another long text'],
+                   'Column 2': ['A', 'B', 'C']})
+
+# Write DataFrame to Excel
+with pd.ExcelWriter('output.xlsx', engine='openpyxl') as writer:
+    df.to_excel(writer, index=False, sheet_name='Sheet1')
+
+    # Get the workbook and worksheet objects
+    workbook = writer.book
+    worksheet = writer.sheets['Sheet1']
+
+    # Iterate over each column
+    for col_idx, col in enumerate(df.columns, start=1):
+        # Get the maximum length of values in the column
+        max_length = max(df[col].astype(str).str.len().max(), len(col))
+
+        # Set the column width to the maximum length plus some padding
+        worksheet.column_dimensions[worksheet.cell(row=1, column=col_idx).column_letter].width = max_length + 2
+
+    # Save the Excel file
+    writer._save()

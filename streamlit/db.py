@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 mongo_connectionStr = 'mongodb://10.200.10.181:27017/'
 Mongo_db = 'Device_log_monitoring'
 Mongo_tracebacks = 'Device_log_tracebacks'
+collection_tracebacks = 'Tracebacks'
 
 client = MongoClient(mongo_connectionStr)  
 db = client[Mongo_db]  
@@ -54,16 +55,17 @@ def getAllCollections():
 
 def get_tracebacks():
     traceback_db = client[Mongo_tracebacks]
+    collection = traceback_db[collection_tracebacks]
     # collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date'].strftime('%Y-%m-%d')]
     documents = []
     if st.session_state['date']:
-        collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date']]
-        document = collection.find_one({'device_ID': st.session_state['deviceID']})
+        # collection = traceback_db[st.session_state['deviceID']+'_'+st.session_state['date']]
+        document = collection.find_one({'device_ID': st.session_state['deviceID'], 'date':st.session_state['date']})
         documents.append(document)
     else:
         for date in get_availableDates():
-            collection = traceback_db[st.session_state['deviceID']+'_'+date]
-            document = collection.find_one({'device_ID': st.session_state['deviceID']})
+            # collection = traceback_db[st.session_state['deviceID']+'_'+date]
+            document = collection.find_one({'device_ID': st.session_state['deviceID'], 'date':date})
             documents.append(document)
     return documents
 
@@ -223,3 +225,9 @@ def get_pieChart_data(documents):
         total_documents +=1
     
     return pieData, total_documents, report
+
+
+
+
+
+

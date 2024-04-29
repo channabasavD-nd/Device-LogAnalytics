@@ -19,10 +19,10 @@ def main():
     
     if st.button('Get Data'): 
         documents = get_data()  
-        report = display_dashboard(documents)  
+        report, pieData, total_documents = display_dashboard(documents)  
         tracebacks = get_tracebacks()
-        gen_report(report, tracebacks)
-        generate_HTML()
+        gen_report(report, tracebacks, pieData, total_documents)
+        # generate_HTML()
 
     
   
@@ -47,7 +47,9 @@ if __name__ == "__main__":
 # show the report 
 # bug in download logs 
 
-# mongo lock 
-# df merge bug
-# make button for html generation 
+
 # fix critical and not critical 
+# change xlsx (compile tracbacks and others into one , make it short crisp readable) 
+
+# clean up Code
+
