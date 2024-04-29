@@ -7,7 +7,7 @@ from lib import mongodb
 from utils import download_logs
 import subprocess
 from session_cronology_analysis import Session_details
-# env,date,devicetype
+
 
 
 st.markdown("<h1 style='text-align: center; color: white;'>Extract Log Analytics</h1>", unsafe_allow_html=True)
@@ -17,7 +17,6 @@ env = st.selectbox("Select Environment", ['Staging','Production']).lower()
 date = st.date_input('Enter Date')  
 device_type = st.selectbox("Select Device Type", ['Normal', 'DTS'])
 date = date.strftime('%Y-%m-%d')
-# st.warning("Make Sure AWS SSO Authentication is completed")
 
 details = {}
 details['deviceid'] = deviceID

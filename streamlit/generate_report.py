@@ -50,7 +50,6 @@ def get_tracebackDF(tracebacks):
                             idx = data[f'Tracebacks_{service}'].index(key)
                             data[f'count_{service}'][idx]+=traceback[service][key]
                         else:
-                            # key[:-1] in data[f'Tracebacks_{service}']
                             if service == 'health' and any('\n'.join(key.split('\n')[:-2]) in item for item in data[f'Tracebacks_{service}']):
                                
                                 reccuring_traceback = ('\n'.join(key.split('\n')[:-2])) 
@@ -145,7 +144,6 @@ def generate_HTML(df, pieData, total_documents):
         for section_title, charts in sections.items():
             f.write("<div class='container'>")
             for chart_name in charts:
-                # Get dimensions of current image
                 img = Image.open(f"{st.session_state['report_folder']}/images/{chart_name}.png")
                 width, height = img.size
                 if width > max_width:
@@ -187,12 +185,10 @@ def generate_HTML(df, pieData, total_documents):
                 if chart_name != 'outwardAnalytics_chart':
                     f.write(f"<p style='text-align: left;'>traceback count: {int(sum_count)}</p>")
                 f.write("</div>")
-            # df.loc[df['alphabet'] == 'A', 'values'].sum()
 
             f.write("</div>")
         f.write("</body></html>")
-            # f.write(f"<h5 style='text-align: left;'>Total tracebacks : 10|Events detected : 202</h5>")
-        # st.success("HTML File successfully generated")
+            
 
 def zip_folder(folder_path, zip_filename):
     with zipfile.ZipFile(zip_filename, 'w', zipfile.ZIP_DEFLATED) as zipf:
@@ -230,11 +226,6 @@ def gen_report(report, tracebacks, PieData, total_documents):
     df, df_traceback = To_DF(report, tracebacks)
     st.write("Summary Report")
     st.write(df)
-    # inference_tracebacks = get_inference_tracebacks()
-    # if not inference_tracebacks.empty:
-    #     df_traceback = pd.concat([df_traceback, inference_tracebacks], axis=1)
-    #     df_traceback = df_traceback.dropna(axis=1, how='all')
-    #     df_traceback = df_traceback.dropna(how='all')
     generate_HTML(df_traceback, PieData, total_documents)
     df_traceback = process_df(df_traceback)
     if not df_traceback.empty:
@@ -242,44 +233,26 @@ def gen_report(report, tracebacks, PieData, total_documents):
         st.write(df_traceback)
         empty_df = pd.DataFrame(index=df_traceback.index, columns=['',''])
         df =  pd.concat([df_traceback, empty_df, df], axis=1)
-        # df = df.dropna(axis=1, how='all')
-        # df = df.dropna(how='all')
     else:
         st.info('No tracebacks found in logs')
 
    
     xlsx = convert_df(df)
     file_name = os.path.join(st.session_state['report_folder'], f"report-{st.session_state['deviceID']}-{st.session_state['ota_version']}.xlsx")
-    # with open(file_name, "wb") as f:
-    #     f.write(xlsx)
+
     with pd.ExcelWriter(file_name, engine='openpyxl') as writer:
         df.to_excel(writer, index=False, sheet_name='Sheet1')
-
-        # Get the workbook and worksheet objects
         workbook = writer.book
         worksheet = writer.sheets['Sheet1']
-
-        # Iterate over each column
         for col_idx, col in enumerate(df.columns, start=1):
-            # Get the maximum length of values in the column
             if col not in  ['Count','', 'Tracebacks'] :
                 max_length = max(df[col].astype(str).str.len().max(), len(col))
-
-            # Set the column width to the maximum length plus some padding
                 worksheet.column_dimensions[worksheet.cell(row=1, column=col_idx).column_letter].width = max_length + 2
-
-        # Save the Excel file
         writer._save()
 
     zip_filename = st.session_state['report_folder']
     zip_folder(zip_filename, f"{zip_filename}.zip")
 
-    # st.download_button( 
-    #     label="Download report",  
-    #     data=xlsx,  
-    #     file_name=f"report-{st.session_state['deviceID']}-{st.session_state['ota_version']}({st.session_state['date']}).xlsx",  
-    #     mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',  
-    # )  
     with open(f"{zip_filename}.zip", "rb") as f:
         st.download_button(label="Download Report", data=f, file_name=f"{zip_filename}.zip", mime="application/zip")
 

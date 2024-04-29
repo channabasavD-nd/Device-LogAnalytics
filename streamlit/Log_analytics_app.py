@@ -22,8 +22,6 @@ def main():
         report, pieData, total_documents = display_dashboard(documents)  
         tracebacks = get_tracebacks()
         gen_report(report, tracebacks, pieData, total_documents)
-        # generate_HTML()
-
     
   
 if __name__ == "__main__":  
@@ -31,25 +29,4 @@ if __name__ == "__main__":
 
 
 
-# PR status 
-# excel 
-# streamlit changes (reason for missing obs_data,)
-# multiple days 
-# loggers 
-# go through log files 
-#lock for only same data getting uploaded
-#Annotation traceback analysis 
-# present properly
-
-# monitor logs 
-# document intstalling package on both B2 and crait
-
-# show the report 
-# bug in download logs 
-
-
-# fix critical and not critical 
-# change xlsx (compile tracbacks and others into one , make it short crisp readable) 
-
-# clean up Code
 

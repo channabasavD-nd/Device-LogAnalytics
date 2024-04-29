@@ -25,16 +25,11 @@ def extract_and_combine_logs(outdir):
     zip_files = os.listdir(outdir)
     for fil in zip_files:
         if ".7z" in fil:
-            #zip_ref = zipfile.ZipFile(os.path.join(outdir, fil), 'r')
             out_zip_dir = os.path.join(outdir, fil.split('.7z')[0])
             if os.path.exists(out_zip_dir):
                 shutil.rmtree(out_zip_dir)
             cmd = "7z x ./%s.7z -o./%s"%(out_zip_dir,out_zip_dir)
-            #print cmd
             out = os.system(cmd)
-            #print out
-            #zip_ref.extractall(out_zip_dir)
-            #zip_ref.close()
             os.remove(os.path.join(outdir, fil))
         elif ".zip" in fil:
             out_zip_dir = os.path.join(outdir, fil.split('.zip')[0])
@@ -48,9 +43,7 @@ def extract_and_combine_logs(outdir):
         new_logs_comb = ['inertialAnalyticsClient', 'inwardAnalyticsClient', 'outwardAnalyticsClient', 'inference', 'scheduler','overspeedClient']
         cmd = "cat %s/*/%s/log_* > %s/%s.log"
         for logs in logs_comb:
-            # os.makedirs("curr_"+logs)
             os.system(cmd%(outdir,logs,outdir,logs))
-        # print("126172")
 
         cmd = "cat %s/*/%s/%s.log* > %s/%s.log"
         for logs in new_logs_comb:

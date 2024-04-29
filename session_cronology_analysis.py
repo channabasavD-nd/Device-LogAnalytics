@@ -9,7 +9,6 @@ import streamlit as st
 
 
 config = configparser.ConfigParser()
-# config.read('streamlit/variables.ini') # while using cli for downloads 
 config.read('variables.ini')
 
 
@@ -267,7 +266,6 @@ class Session_details(object):
                     processing_match = re.search(config.get('inferenceInertial', 'processing'), line)
                     if currentSession_match:
                         cur_session = currentSession_match.group(1)
-                        # print(cur_session)
                     if "traceback" in line.lower():
                         traceback_index = log_content.index(line)
                         if not log_content[traceback_index+1][:2].isdigit():
@@ -278,16 +276,13 @@ class Session_details(object):
                                 traceback_index+=1
                         else:
                                 traceback = 'Traceback ' + line.split('Traceback')[-1]
-                        # self.tracebacks['inferenceInertial'].append(traceback)
                         if traceback in self.tracebacks['inferenceInertial']:
                             self.tracebacks['inferenceInertial'][traceback]+=1
                         else:
                             self.tracebacks['inferenceInertial_sessionID'][traceback] = cur_session
-                            # print('inside traceback')
                             self.tracebacks['inferenceInertial'][traceback] = 1
 
                     if processing_match:
-                        # print('in_inf_iner')
                         session_id = processing_match.group(1)
                         self.session_ids[session_id]['inferenceInertial']["NRT_processing_status"] += 1
                     elif summaryFile_match:
@@ -320,7 +315,6 @@ class Session_details(object):
                                 traceback_index+=1
                         else:
                                 traceback = 'Traceback ' + line.split('Traceback')[-1]
-                        # self.tracebacks['analyticsService'].append(traceback)
                         if traceback in self.tracebacks['analyticsService']:
                             self.tracebacks['analyticsService'][traceback]+=1
                         else:
@@ -359,8 +353,6 @@ class Session_details(object):
                     Session_end_match = re.search(config.get('sessionInfo', 'session_endTime'), line)
                     Summary_match = re.search(config.get('inference', 'Summary'), line)
                     Processing_match = re.search(config.get('inference', 'Processing'), line)
-                    # NRT_failure_match = re.search(config.get('inference', 'NRT_failure'), line)
-                    # print(cur_session)
                     if 'Traceback (most recent call last):' in line:
                         self.session_ids[cur_session]['inference']['traceback_count']+=1
                     if currentSession_match:
@@ -375,27 +367,11 @@ class Session_details(object):
                                 traceback_index+=1
                         else:
                                 traceback = 'Traceback ' + line.split('Traceback')[-1]
-                        # print(traceback)
-                        # self.tracebacks['inferenceInertial'].append(traceback)
                         if traceback in self.tracebacks['inference']:
                             self.tracebacks['inference'][traceback]+=1
                         else:
                             self.tracebacks['inference_sessionID'][traceback] = cur_session
-                            # print('inside traceback')
                             self.tracebacks['inference'][traceback] = 1
-                    # elif NRT_failure_match:
-                    #     service = NRT_failure_match.group(1)
-                    #     traceback_index = log_content.index(line)+1
-                    #     if not log_content[traceback_index][:2].isdigit():
-                    #         traceback = ''
-                    #         while traceback_index<len(log_content) and not log_content[traceback_index][:2].isdigit():
-                    #             traceback+='\n'+log_content[traceback_index]
-                    #             traceback_index+=1
-                    #     else:
-                    #         if "Traceback" in line:
-                    #             traceback = 'Traceback ' + line.split('Traceback')[-1]
-
-                    #     self.session_ids[cur_session]['inference'][f'{service}_NRT']['traceback'] = traceback
                     elif Session_end_match:
                         session_id = Session_end_match.group(2)
                         Timestamp = Session_end_match.group(1)
@@ -461,12 +437,10 @@ class Session_details(object):
                                         traceback_index+=1
                                 else:
                                         traceback = 'Traceback ' + line.split('Traceback')[-1]
-                                # self.tracebacks['analyticsService'].append(traceback)
-                                # print(traceback)
-                                if traceback in self.tracebacks[f"{Log_file.split('.')[0]}"]:
-                                    self.tracebacks[f"{Log_file.split('.')[0]}"][traceback]+=1
+                                if traceback in self.tracebacks[f'{Log_file.split('.')[0]}']:
+                                    self.tracebacks[f'{Log_file.split('.')[0]}'][traceback]+=1
                                 else:
-                                    self.tracebacks[f"{Log_file.split('.')[0]}"][traceback] = 1
+                                    self.tracebacks[f'{Log_file.split('.')[0]}'][traceback] = 1
             except Exception as e:
                 st.write('\nException occured while fetching tracebacks:',e,'\n')
                 print('\nException occured while fetching tracebacks:',e,'\n')

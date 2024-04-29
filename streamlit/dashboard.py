@@ -95,7 +95,6 @@ def display_dashboard(documents):
     with st.expander("## Analytics Client"):
 
         col1, col2 = st.columns(2)
-        # Add content to the first column
         with col1:
             inwardClient_label = ['Obs data written', 'Obs data missing']
             inwardClient_data = [pieData['inwardClient']['obs_written'], total_documents-pieData['inwardClient']['obs_written']]
@@ -105,9 +104,6 @@ def display_dashboard(documents):
             st.pyplot(fig)
             plt.savefig(f'{report_folder}/images/inwardClient_chart.png', bbox_inches='tight') 
             plt.close(fig) 
-            # st.markdown(f"<h5 style='text-align: left; color: white;'>Events detected : {pieData['inwardClient']['events_detected']}</h3>", unsafe_allow_html=True)
-            # st.markdown(f"<h5 style='text-align: left; color: white;'>Events missing : {pieData['inwardClient']['events_notProcessed']}</h3>", unsafe_allow_html=True)
-
         with col2:
             outwardClient_label = ['Obs data written', 'Obs data missing']
             outwardClient_data = [pieData['outwardClient']['obs_written'], total_documents-pieData['outwardClient']['obs_written']]
@@ -118,9 +114,6 @@ def display_dashboard(documents):
             plt.savefig(f'{report_folder}/images/outwardClient_chart.png', bbox_inches='tight')  
             plt.close(fig)
             
-            # st.markdown(f"<h5 style='text-align: left; color: white;'>Events detected : {pieData['outwardClient']['events_detected']}</h3>", unsafe_allow_html=True)
-            # st.markdown(f"<h5 style='text-align: left; color: white;'>Events missing : {pieData['outwardClient']['events_notProcessed']}</h3>", unsafe_allow_html=True)
-
     with st.expander("## Inference"):
 
         col1, col2 = st.columns(2)
