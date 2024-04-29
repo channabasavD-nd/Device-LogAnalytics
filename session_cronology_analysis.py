@@ -437,7 +437,7 @@ class Session_details(object):
                                         traceback_index+=1
                                 else:
                                         traceback = 'Traceback ' + line.split('Traceback')[-1]
-                                if traceback in self.tracebacks[f'{Log_file.split('.')[0]}']:
+                                if traceback in self.tracebacks[f"{Log_file.split('.')[0]}"]:
                                     self.tracebacks[f"{Log_file.split('.')[0]}"][traceback]+=1
                                 else:
                                     self.tracebacks[f"{Log_file.split('.')[0]}"][traceback] = 1
