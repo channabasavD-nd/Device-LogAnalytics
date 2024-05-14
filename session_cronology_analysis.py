@@ -421,7 +421,7 @@ class Session_details(object):
                 st.write("updated ota version")
     
     def compiled_traceback_stats(self):
-            logs = ['audio.log','health.log','overspeedClient.log','reboot.log','scheduler.log']
+            logs = ['audio.log','overspeedClient.log','reboot.log','scheduler.log']
             try:
                 for Log_file in logs:
                     with open(f"{self.outdir}/{Log_file}", "r", encoding="utf-8", errors="ignore") as file:
